@@ -44,7 +44,9 @@ fi
 
 echo "HTTP service is $STATUS"
 # 6. Disk usage
+DISK_USAGE=$(df -h / | awk 'NR==2 {print $5}') 
 
+echo "Disk usage: $DISK_USAGE"
 # 7. Final log summary 
 echo "Health check completed"
 
