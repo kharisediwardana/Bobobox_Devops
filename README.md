@@ -14,8 +14,7 @@ chmod +x health_check.sh
 
 # Docker
 
-1. Build image
-   docker build -t app .
+Running docker compose : docker compose up -d --build
+Local : http://localhost:3000
 
-2. Run container
-   docker run -p 3000:3000 app
+stop : docker compose down
