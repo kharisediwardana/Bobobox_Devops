@@ -14,7 +14,6 @@ PORT=${2:-80}
 
 
 # 4. Ping test
-    # if fail → log + exit
 ping -c 2 -W 2 "$HOST" > /dev/null 2>&1
 
 if [ $? -ne 0 ]; then
@@ -34,9 +33,18 @@ else
 fi
 
 # 5. HTTP check
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://$HOST:$PORT --max-time 5)
 
+if [ "$HTTP_CODE" -ge 200 ];
+then
+    STATUS="UP"
+else
+    STATUS="DOWN"
+fi
+
+echo "HTTP service is $STATUS"
 # 6. Disk usage
 
-# 7. Final log summary (optional)
+# 7. Final log summary 
 echo "Health check completed"
 
