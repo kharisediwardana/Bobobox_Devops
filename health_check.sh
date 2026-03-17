@@ -9,27 +9,29 @@ fi
 # 2. Initialize variables
 HOST=$1
 PORT=${2:-80}
+LOG_FILE="health_check.log"
 
 # 3. Logging function
+timestamp() {
+  date "+%Y-%m-%d %H:%M:%S"
+}
+
+log() {
+    echo "$(timestamp) - $1" >> "$LOG_FILE"
+}
+
+log "# ./health_check.sh $HOST $PORT"
 
 
 # 4. Ping test
 ping -c 2 -W 2 "$HOST" > /dev/null 2>&1
 
 if [ $? -ne 0 ]; then
-    echo "Server unreachable"
-    echo "Ping Failed: Server unreachable"
+    echo "Server unreachable."
+    log "Server is unreachable"
     exit 2
 else 
-    echo "Ping successfull"
-fi
-
-if [ $? -ne 0 ]; then
-  echo "Server unreachable"
-  echo "Ping failed: Server unreachable"
-  exit 2
-else
-  echo "Ping successful"
+    log "Server is reachable."
 fi
 
 # 5. HTTP check
@@ -43,10 +45,15 @@ else
 fi
 
 echo "HTTP service is $STATUS"
+
+log "Web service on port $PORT is $STATUS."
+
 # 6. Disk usage
 DISK_USAGE=$(df -h / | awk 'NR==2 {print $5}') 
 
 echo "Disk usage: $DISK_USAGE"
+
+log "Disk usage on / is $DISK_USAGE."
 # 7. Final log summary 
-echo "Health check completed"
+log "Health check completed"
 
