@@ -1,15 +1,16 @@
 provider "aws" {
-  region = "ap-southeast-1"
+  region = var.aws_region
 }
 
-resource "aws_instance" "my_app" {
+resource "aws_instance" "app" {
   ami           = "ami-0df7a207adb9748c7"
-  instance_type = "t2.micro"
+  instance_type = var.instance_type
 
   vpc_security_group_ids = [aws_security_group.app_sg.id]
+  associate_public_ip_address = true
 
   tags = {
-    Name = "next.sj app"
+    Name = var.instance_name
   }
 }
 
