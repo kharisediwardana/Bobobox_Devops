@@ -1,7 +1,7 @@
 #!/bin/bash
 
-yum install -y nginx
-systemctl enable nginx
+apt update -y
+apt install -y nginx
 systemctl start nginx
-
-echo "Hello, OpenTofu!" > /usr/share/nginx/html/index.html
+systemctl enable nginx
+echo "Hello, OpenTofu!" > /var/www/html/index.html
