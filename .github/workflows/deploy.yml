@@ -2,7 +2,7 @@ name: Deploy App
 
 on:
   workflow_run:
-    workflows: ["Build & Push"]
+    workflows: ["Build & Push Docker Compose App"]
     types:
       - completed
 
