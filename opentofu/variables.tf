@@ -7,7 +7,7 @@ variable "instance_type" {
 }
 
 variable "instance_name" {
-  default     = "next.sj app"
+  default     = "bobobox-app"
 }
 
 
