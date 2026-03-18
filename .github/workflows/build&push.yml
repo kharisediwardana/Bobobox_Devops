@@ -24,7 +24,5 @@ jobs:
 
       - name: Build & Push Docker Compose
         run: |
-          cd docker
           docker compose build
-          docker tag bobobox-app ${{ secrets.DOCKER_USERNAME }}/bobobox-app:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/bobobox-app:latest
