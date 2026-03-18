@@ -27,10 +27,11 @@ log "# ./health_check.sh $HOST $PORT"
 ping -c 2 -W 2 "$HOST" > /dev/null 2>&1
 
 if [ $? -ne 0 ]; then
-    echo "Server unreachable."
-    log "Server is unreachable"
+    echo "Server unreachable"
+    log "Server unreachable"
     exit 2
-else 
+else
+    echo "Server is reachable."
     log "Server is reachable."
 fi
 
@@ -44,16 +45,19 @@ else
     STATUS="DOWN"
 fi
 
-echo "HTTP service is $STATUS"
+echo "Web service on port $PORT is $STATUS."
 
 log "Web service on port $PORT is $STATUS."
 
 # 6. Disk usage
 DISK_USAGE=$(df -h / | awk 'NR==2 {print $5}') 
 
-echo "Disk usage: $DISK_USAGE"
+echo "Disk usage on / is $DISK_USAGE."
 
 log "Disk usage on / is $DISK_USAGE."
-# 7. Final log summary 
+
+
+# 7. Final log summary
 log "Health check completed"
+echo "Results logged to health_check.log"
 
