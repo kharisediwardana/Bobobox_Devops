@@ -10,3 +10,5 @@ variable "instance_name" {
   default     = "next.sj app"
 }
 
+
+
