@@ -2,11 +2,7 @@ provider "aws" {
   region = var.aws_region
 }
 
-
 resource "aws_security_group" "app_sg" {
-  provider = aws
-
-  # Allow HTTP (web)
   ingress {
     from_port   = 80
     to_port     = 80
@@ -14,7 +10,6 @@ resource "aws_security_group" "app_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Allow SSH (remote access)
   ingress {
     from_port   = 22
     to_port     = 22
@@ -22,14 +17,19 @@ resource "aws_security_group" "app_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
-
 
 resource "aws_instance" "app" {
   ami           = "ami-0df7a207adb9748c7"
   instance_type = var.instance_type
 
-  vpc_security_group_ids = [aws_security_group.app_sg.id]
+  vpc_security_group_ids      = [aws_security_group.app_sg.id]
   associate_public_ip_address = true
 
   user_data = file("${path.module}/scripts/init.sh")
@@ -38,4 +38,3 @@ resource "aws_instance" "app" {
     Name = var.instance_name
   }
 }
-
