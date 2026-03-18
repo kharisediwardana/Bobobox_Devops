@@ -5,7 +5,7 @@ services:
     build:
       context: ../
       dockerfile: docker/Dockerfile
-    image: bobobox-app:latest
+    image: kewtz9/bobobox-app:latest
     container_name: bobobox-app
     ports:
       - "3000:3000"
