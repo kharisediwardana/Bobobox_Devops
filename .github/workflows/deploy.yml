@@ -35,6 +35,24 @@ jobs:
             sudo docker compose pull
             sudo docker compose up -d
 
+            # Switch Nginx from static page to reverse proxy
+            sudo tee /etc/nginx/sites-available/default > /dev/null <<'NGINX'
+            server {
+                listen 80;
+                server_name _;
+
+                location / {
+                    proxy_pass http://localhost:3000;
+                    proxy_http_version 1.1;
+                    proxy_set_header Upgrade $http_upgrade;
+                    proxy_set_header Connection 'upgrade';
+                    proxy_set_header Host $host;
+                    proxy_cache_bypass $http_upgrade;
+                }
+            }
+            NGINX
+            sudo systemctl restart nginx
+
       - name: Run health check
         uses: appleboy/ssh-action@v0.1.9
         with:
